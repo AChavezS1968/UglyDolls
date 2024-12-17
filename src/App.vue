@@ -35,7 +35,7 @@ export default {
       <HelloWorld msg="Bienvenido a Ugly Dollss" />
     </div>
     <ProductList @addToCart="addToCart" />
-    <ShoppingCart :cart="cart" @removeFromCart="removeFromCart" />
+    <ShoppingCart :cart="cart" @removeFromCart="removeFromCart" @envioPedido="envioPedido"/>
   </div>
 </template>
 
@@ -72,10 +72,14 @@ export default {
         this.cart.splice(index, 1);        
       }
     },    
+    clearCart() {
+      this.cart = [];
+    },
     envioPedido(msg) {
-      const url = "https://api.whatsapp.com/api/send?phone=525554690638&text=" + msg;
-      console.log(url);
+      const url = `https://api.whatsapp.com/send?phone=525554690638&text=${encodeURIComponent(msg)}`;
       window.open(url, '_blank');
+      this.clearCart();
+      alert("Pedido enviado. En breve nos comunicaremos con usted.");
     }
   }
 };

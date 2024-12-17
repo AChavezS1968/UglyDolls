@@ -3,12 +3,20 @@
       <center><h1>Catálogo de Productos</h1></center>      
       <div class="product-list">
         <ProductItem
-          v-for="product in filteredProducts"
+          v-for="product in fotosPaginadas"
           :key="product.id"
           :product="product"
           @addToCart="addToCart"
         />
       </div>
+
+          <!-- Controles de paginación -->
+      <div class="paginacion">
+        <button @click="paginaActual--" :disabled="paginaActual === 1">Anterior</button>
+        <span>Página {{ paginaActual }}</span>
+        <button @click="paginaActual++" :disabled="paginaActual === totalPaginas">Siguiente</button>
+      </div>
+
     </div>
   </template>
   
@@ -58,6 +66,8 @@
           { id: 38, clave: '0036', nombre: 'Tarjeta de Regalo', categoria: 'tarjetas', descripcion: 'Tarjeta de cumpleaños', imagen: '0001 Ojos.png', precio:60, cantidad: 0 }
         ],
         categoriaSeleccionada: 'todos',
+        paginaActual: 1,
+        fotosPorPagina: 10
       };
     },
     computed: {
@@ -66,6 +76,14 @@
           return this.products;
         }
         return this.products.filter(product => product.categoria === this.categoriaSeleccionada);
+      },
+      totalPaginas() {
+        return Math.ceil(this.products.length / this.fotosPorPagina);
+      },
+      fotosPaginadas() {
+        const inicio = (this.paginaActual - 1) * this.fotosPorPagina;
+        const fin = inicio + this.fotosPorPagina;
+        return this.products.slice(inicio, fin);
       }
     },
     methods: {
@@ -82,5 +100,10 @@
     flex-wrap: wrap;
     gap: 20px;
   }
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
   </style>
+  
   

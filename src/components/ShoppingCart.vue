@@ -18,7 +18,7 @@
       </h1>
       <br>
       <center>
-        <button class="btnCompra" v-if="cart.length > 0" @click="envioPedido">Realizar Compra</button>
+        <button @click="envioPedido" class="btnCompra" v-if="cart.length > 0" >Realizar Compra</button>
       </center>      
     </div>
   </template>
@@ -35,7 +35,6 @@
         const lines = this.cart.map(item => `${item.clave} - ${item.nombre} - Cantidad ${item.cantidad}`);
         const total = this.cart.reduce((total, item) => total + item.precio * item.cantidad, 0);
         const msg = `Favor de enviar el siguiente pedido:\n${lines.join("\n")}\nTotal: ${total.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}`;
-
         this.$emit('envioPedido', msg);
       }
     }
